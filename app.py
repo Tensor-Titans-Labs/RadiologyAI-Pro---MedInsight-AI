@@ -5,6 +5,13 @@ from google_api_key import google_api_key
 from datetime import datetime
 import io
 
+# --- Streamlit UI Configuration (MUST BE FIRST) ---
+st.set_page_config(
+    page_title="Visual Medical Assistant", 
+    page_icon="🩺", 
+    layout="wide"
+)
+
 # --- Configure Google API ---
 genai.configure(api_key=google_api_key)
 generation_config = {
@@ -93,13 +100,6 @@ st.markdown("""
     }
     </style>
     """, unsafe_allow_html=True)
-
-# --- Streamlit UI ---
-st.set_page_config(
-    page_title="Visual Medical Assistant", 
-    page_icon="🩺", 
-    layout="wide"
-)
 
 # Header
 st.markdown("""
