@@ -65,7 +65,7 @@ st.markdown("""
     }
     .analysis-section {
         background: white;
-        padding: 25px;
+        padding: 20px;
         border-radius: 15px;
         box-shadow: 0 2px 10px rgba(0,0,0,0.1);
         min-height: 400px;
@@ -188,7 +188,6 @@ with col1:
 
 with col2:
     st.markdown("<div class='analysis-section'>", unsafe_allow_html=True)
-    st.markdown("### 📊 Analysis Results")
     
     analysis_placeholder = st.empty()
     
@@ -224,6 +223,7 @@ with col2:
         # Display previously generated analysis
         analysis_placeholder.markdown(st.session_state.analysis_result)
     else:
+        analysis_placeholder.markdown("### 📊 Analysis Results")
         analysis_placeholder.info("👈 Upload an image and click 'Generate Analysis' to see results here")
     
     st.markdown("</div>", unsafe_allow_html=True)
