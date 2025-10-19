@@ -189,10 +189,7 @@ st.markdown("</div>", unsafe_allow_html=True)
 
 submit = st.button("🔍 Generate Analysis", use_container_width=True, type="primary")
 
-# --- Analysis Section ---
-st.markdown("<div class='analysis-section' style='margin-top: 20px; padding-top: 15px;'>", unsafe_allow_html=True)
 
-analysis_placeholder = st.empty()
 
 # --- Logic for Analysis ---
 if submit:
@@ -296,3 +293,4 @@ st.markdown("""
 
 st.markdown("<br>", unsafe_allow_html=True)
 st.markdown("<p style='text-align: center; color: #999;'>Made with ❤️ by Md Zaheeruddin (Zaheer JK) | Powered by Google Gemini AI</p>", unsafe_allow_html=True)
+
