@@ -75,7 +75,6 @@ st.markdown("""
         border-radius: 15px;
         box-shadow: 0 2px 10px rgba(0,0,0,0.1);
         margin-top: 15px;
-        min-height: 300px;
     }
     .sidebar-section {
         background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
@@ -194,8 +193,6 @@ st.markdown("</div>", unsafe_allow_html=True)
 submit = st.button("🔍 Generate Analysis", use_container_width=True, type="primary")
 
 # --- Analysis Section ---
-st.markdown("<div class='analysis-section'>", unsafe_allow_html=True)
-
 analysis_placeholder = st.empty()
 
 # --- Logic for Analysis ---
@@ -215,19 +212,20 @@ if submit:
                     st.session_state.analysis_result = response.text
                     st.session_state.upload_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
                     st.session_state.file_name = file_uploaded.name
+                    st.markdown("<div class='analysis-section'>", unsafe_allow_html=True)
                     analysis_placeholder.markdown(response.text)
+                    st.markdown("</div>", unsafe_allow_html=True)
                 else:
                     analysis_placeholder.error("❌ No response generated. Please try again.")
             except Exception as e:
                 analysis_placeholder.error(f"❌ Error: {e}")
 
 elif 'analysis_result' in st.session_state:
+    st.markdown("<div class='analysis-section'>", unsafe_allow_html=True)
     analysis_placeholder.markdown(st.session_state.analysis_result)
+    st.markdown("</div>", unsafe_allow_html=True)
 else:
-    analysis_placeholder.markdown("### 📊 Analysis Results")
     analysis_placeholder.info("👆 Upload an image and click 'Generate Analysis' to see results")
-
-st.markdown("</div>", unsafe_allow_html=True)
 
 # --- Download Report Section ---
 if 'analysis_result' in st.session_state:
