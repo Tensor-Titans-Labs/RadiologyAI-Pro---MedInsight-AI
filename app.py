@@ -9,7 +9,7 @@ import io
 st.set_page_config(
     page_title="Visual Medical Assistant", 
     page_icon="🩺", 
-    layout="wide"
+    layout="centered"
 )
 
 # --- Configure Google API ---
@@ -165,83 +165,81 @@ with st.sidebar:
     st.markdown("**Supported Formats:**  \n📸 PNG, JPG, JPEG")
 
 # --- Main Content ---
-col1, col2 = st.columns([1, 2], gap="large")
+st.markdown("<div class='upload-section'>", unsafe_allow_html=True)
+st.markdown("### 📤 Upload Medical Image")
 
-with col1:
-    st.markdown("<div class='upload-section'>", unsafe_allow_html=True)
-    st.markdown("### 📤 Upload Medical Image")
+file_uploaded = st.file_uploader(
+    label="Choose an image file", 
+    type=['png','jpg','jpeg'], 
+    help="Upload a clear medical image for accurate analysis",
+    label_visibility="collapsed"
+)
+
+if file_uploaded:
+    st.image(file_uploaded, use_container_width=True, caption='📷 Image Preview')
+    st.success("✅ Image uploaded successfully!")
     
-    file_uploaded = st.file_uploader(
-        label="Choose an image file", 
-        type=['png','jpg','jpeg'], 
-        help="Upload a clear medical image for accurate analysis",
-        label_visibility="collapsed"
-    )
-    
-    if file_uploaded:
-        st.image(file_uploaded, use_container_width=True, caption='📷 Image Preview')
-        st.success("✅ Image uploaded successfully!")
-        
-        # File info
-        file_size = len(file_uploaded.getvalue()) / 1024  # KB
-        st.caption(f"📊 File size: {file_size:.1f} KB | Format: {file_uploaded.type}")
+    # File info
+    file_size = len(file_uploaded.getvalue()) / 1024  # KB
+    st.caption(f"📊 File size: {file_size:.1f} KB | Format: {file_uploaded.type}")
+else:
+    st.info("👆 Click above to upload your medical image")
+
+st.markdown("</div>", unsafe_allow_html=True)
+
+st.markdown("<br>", unsafe_allow_html=True)
+submit = st.button("🔍 Generate Analysis", use_container_width=True, type="primary")
+
+# --- Analysis Section ---
+st.markdown("<br>", unsafe_allow_html=True)
+st.markdown("<div class='analysis-section' style='margin-top: 0; padding-top: 15px;'>", unsafe_allow_html=True)
+
+analysis_placeholder = st.empty()
+
+# --- Logic for Analysis ---
+if submit:
+    if not file_uploaded:
+        analysis_placeholder.warning("⚠️ Please upload an image first.")
     else:
-        st.info("👆 Click above to upload your medical image")
-    
-    st.markdown("</div>", unsafe_allow_html=True)
-    
-    st.markdown("<br>", unsafe_allow_html=True)
-    submit = st.button("🔍 Generate Analysis", use_container_width=True, type="primary")
-
-with col2:
-    st.markdown("<div class='analysis-section' style='margin-top: 0; padding-top: 15px;'>", unsafe_allow_html=True)
-    
-    analysis_placeholder = st.empty()
-    
-    # --- Logic for Analysis ---
-    if submit:
-        if not file_uploaded:
-            analysis_placeholder.warning("⚠️ Please upload an image first.")
-        else:
-            with st.spinner("🔄 Analyzing image... Please wait"):
-                try:
-                    image_data = file_uploaded.getvalue()
-                    image_parts = [{"mime_type": file_uploaded.type, "data": image_data}]
-                    prompt_parts = [image_parts[0], system_prompts[0]]
-                    
-                    response = model.generate_content(prompt_parts)
-                    
-                    if response and response.text:
-                        # Store in session state for download
-                        st.session_state.analysis_result = response.text
-                        st.session_state.upload_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-                        st.session_state.file_name = file_uploaded.name
-                        
-                        # Display analysis
-                        analysis_placeholder.markdown(response.text)
-                        
-                    else:
-                        analysis_placeholder.error("❌ No response generated. Please try again.")
+        with st.spinner("🔄 Analyzing image... Please wait"):
+            try:
+                image_data = file_uploaded.getvalue()
+                image_parts = [{"mime_type": file_uploaded.type, "data": image_data}]
+                prompt_parts = [image_parts[0], system_prompts[0]]
                 
-                except Exception as e:
-                    analysis_placeholder.error(f"❌ Error generating analysis: {e}")
-    
-    elif 'analysis_result' in st.session_state:
-        # Display previously generated analysis
-        analysis_placeholder.markdown(st.session_state.analysis_result)
-    else:
-        analysis_placeholder.markdown("### 📊 Analysis Results")
-        analysis_placeholder.info("👈 Upload an image and click 'Generate Analysis' to see results here")
-    
-    st.markdown("</div>", unsafe_allow_html=True)
+                response = model.generate_content(prompt_parts)
+                
+                if response and response.text:
+                    # Store in session state for download
+                    st.session_state.analysis_result = response.text
+                    st.session_state.upload_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+                    st.session_state.file_name = file_uploaded.name
+                    
+                    # Display analysis
+                    analysis_placeholder.markdown(response.text)
+                    
+                else:
+                    analysis_placeholder.error("❌ No response generated. Please try again.")
+            
+            except Exception as e:
+                analysis_placeholder.error(f"❌ Error generating analysis: {e}")
+
+elif 'analysis_result' in st.session_state:
+    # Display previously generated analysis
+    analysis_placeholder.markdown(st.session_state.analysis_result)
+else:
+    analysis_placeholder.markdown("### 📊 Analysis Results")
+    analysis_placeholder.info("👈 Upload an image and click 'Generate Analysis' to see results here")
+
+st.markdown("</div>", unsafe_allow_html=True)
 
 # --- Download Report Section ---
 if 'analysis_result' in st.session_state:
     st.markdown("<br>", unsafe_allow_html=True)
     
-    col_download1, col_download2, col_download3 = st.columns([1, 1, 1])
+    col1, col2, col3 = st.columns([1, 2, 1])
     
-    with col_download2:
+    with col2:
         # Prepare report content
         report_content = f"""
 VISUAL MEDICAL ASSISTANT - ANALYSIS REPORT
@@ -277,7 +275,7 @@ Built by Md Zaheeruddin (Zaheer JK)
             type="secondary"
         )
     
-    with col_download3:
+    with col3:
         if st.button("🗑️ Clear Analysis", use_container_width=True):
             del st.session_state.analysis_result
             del st.session_state.upload_time
