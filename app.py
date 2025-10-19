@@ -65,10 +65,17 @@ st.markdown("""
     }
     .analysis-section {
         background: white;
-        padding: 20px;
+        padding: 15px;
         border-radius: 15px;
         box-shadow: 0 2px 10px rgba(0,0,0,0.1);
         min-height: 400px;
+    }
+    .element-container {
+        margin-bottom: 0 !important;
+    }
+    div[data-testid="column"]:nth-of-type(2) .element-container:first-child {
+        margin-top: 0 !important;
+        padding-top: 0 !important;
     }
     .sidebar-section {
         background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
@@ -187,7 +194,7 @@ with col1:
     submit = st.button("🔍 Generate Analysis", use_container_width=True, type="primary")
 
 with col2:
-    st.markdown("<div class='analysis-section'>", unsafe_allow_html=True)
+    st.markdown("<div class='analysis-section' style='margin-top: 0; padding-top: 15px;'>", unsafe_allow_html=True)
     
     analysis_placeholder = st.empty()
     
