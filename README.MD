@@ -32,7 +32,7 @@ A Streamlit web application that leverages Google's Gemini AI (gemini-2.0-flash-
 Clone the repository (or download the files):
 
 ```bash
-git clone <your-repository-url>
+git clone <https://github.com/Tensor-Titans-Labs/Visual-Medical-Assistant.git>
 cd visual-medical-assistant
 ```
 
@@ -205,5 +205,6 @@ This project is provided as-is for educational purposes.
 ---
 
 ## Author
+
 
 Built by Md Zaheeruddin
