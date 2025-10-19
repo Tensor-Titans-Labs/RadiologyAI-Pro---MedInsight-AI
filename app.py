@@ -187,12 +187,10 @@ else:
 
 st.markdown("</div>", unsafe_allow_html=True)
 
-st.markdown("<br>", unsafe_allow_html=True)
 submit = st.button("🔍 Generate Analysis", use_container_width=True, type="primary")
 
 # --- Analysis Section ---
-st.markdown("<br>", unsafe_allow_html=True)
-st.markdown("<div class='analysis-section' style='margin-top: 0; padding-top: 15px;'>", unsafe_allow_html=True)
+st.markdown("<div class='analysis-section' style='margin-top: 20px; padding-top: 15px;'>", unsafe_allow_html=True)
 
 analysis_placeholder = st.empty()
 
